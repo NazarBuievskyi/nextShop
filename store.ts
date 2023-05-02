@@ -18,12 +18,19 @@ type CartState = {
     addProduct: (item: AddCartType) => void
     removeProduct: (item: AddCartType) => void
     toggleCart: () => void,
+    paymentIntent: string,
+    onCheckOut: string,
+
+    setPaymentIntent: (val: string) => void
+    setCheckOut: (val: string) => void
 }
 export const useCartStore = create<CartState>()(
     persist(
         (set) => ({
             cart: [],
             isOpen: false,
+            paymentIntent: '',
+            onCheckOut: 'cart',
             toggleCart: () => set((state) => ({isOpen: !state.isOpen})),
             addProduct: (item) => set((state) => {
                 const existingItem = state.cart.find(cartItem => cartItem.id === item.id)
@@ -42,20 +49,22 @@ export const useCartStore = create<CartState>()(
             }),
             removeProduct: (item) => set(state => {
                 const existingItem = state.cart.find((cartItem) => cartItem.id === item.id)
-                if(existingItem && existingItem.quantity > 1){
+                if (existingItem && existingItem.quantity > 1) {
                     const updateCart = state.cart.map(cartItem => {
-                        if(cartItem.id === item.id){
+                        if (cartItem.id === item.id) {
                             return {...cartItem, quantity: cartItem.quantity - 1}
                         }
                         return cartItem
                     })
-                    return{cart: updateCart}
+                    return {cart: updateCart}
                 } else {
                     //remove item from cart
                     const filteredCart = state.cart.filter(cartItem => cartItem.id !== item.id)
                     return {cart: filteredCart}
                 }
-            })
+            }),
+            setPaymentIntent: (val) => set((state) => ({paymentIntent: val})),
+            setCheckOut: val => set((state) => ({onCheckOut: val}))
         }),
         {
             name: 'cart-store'

@@ -5,13 +5,14 @@ import AddCard from "@/app/product/[id]/AddCard";
 
 export default async function Product({searchParams}: SearchParamsType) {
     return (
-        <div className={'flex justify-between gap-24 p-12 text-gray-700'}>
+        <div className={'flex flex-col 2xl:flex-row 2xl:items-start items-center justify-between gap-24 text-gray-700'}>
             <Image
                 src={searchParams.image}
                 alt={searchParams.name}
-                width={600}
-                height={600}
-                className={'w-full h-56 object-cover rounded-lg '}/>
+                width={500}
+                height={500}
+                className={'w-full rounded-lg h-full'}
+            />
             <div className={'font-medium text-gray-700'}>
                 <h1 className={'text-2xl font-medium py-2 '}>{searchParams.name}</h1>
                 <p className={'py-2'}>{searchParams.description}</p>

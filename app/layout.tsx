@@ -3,6 +3,22 @@ import Nav from "@/app/components/Nav";
 import {getServerSession} from "next-auth/next";
 import {authOptions} from "@/pages/api/auth/[...nextauth]";
 import Hydrate from "@/app/components/Hydrate";
+import {Roboto, Lobster_Two} from 'next/font/google';
+
+
+// Define main font
+const roboto = Roboto({
+    weight: ['400', '500', '700'],
+    subsets: ['latin'],
+    variable: '--font-roboto'
+})
+const lobster = Lobster_Two({
+    weight: '700',
+    subsets: ['latin'],
+    variable: '--font-lobster'
+})
+
+
 
 export const metadata = {
     title: 'Create Next App',
@@ -15,7 +31,7 @@ export default async function RootLayout({children,}: { children: React.ReactNod
 
     return (
         <html lang="en">
-        <body className={'mx-64'}>
+        <body className={`mx-12 lg:mx-48 ${roboto.className}`}>
         <Hydrate>
             <Nav user={session?.user} expires={session?.expires as string}/>
             {children}
