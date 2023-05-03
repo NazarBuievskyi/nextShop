@@ -8,9 +8,22 @@ export default function AddCard({name, id, image, unit_amount, quantity,}: AddCa
     const cartStore = useCartStore()
     const [added, setAdded] = useState(false)
 
+    const handleAddToCart = () => {
+        cartStore.addProduct({id, image, unit_amount, quantity, name})
+        setAdded(true)
+        setTimeout(() => {
+            setAdded(false)
+        }, 1000)
+    }
+
     return (
         <>
-            <button onClick={() => cartStore.addProduct({id, image, unit_amount, quantity, name})} className='my-12 text-white py-2 px-6 font-medium rounded-md bg-teal-700 '>Add to cart</button>
+            <button onClick={handleAddToCart}
+                    disabled={added}
+                    className='my-4 btn btn-primary'>
+                {!added && <span>Add to cart</span>}
+                {added && <span>Adding to cart</span>}
+            </button>
         </>
     )
 }

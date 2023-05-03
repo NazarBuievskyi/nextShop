@@ -2,10 +2,12 @@
 
 import {loadStripe, StripeElementsOptions} from "@stripe/stripe-js";
 import {Elements} from '@stripe/react-stripe-js'
-import {useCartStore} from "@/store";
+import {useCartStore, useThemeStore} from "@/store";
 import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import CheckoutForm from "@/app/components/CheckoutForm";
+import OrderAnimation from "@/app/components/OrderAnimation";
+import {motion} from 'framer-motion'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
@@ -14,6 +16,18 @@ export default function Checkout() {
     const cartStore = useCartStore()
     const router = useRouter()
     const [clientSecret, setClientSecret] = useState('')
+
+    const themeStore = useThemeStore()
+    const [stripeTheme, setStripeTheme] = useState<'flat' | 'stripe' | 'night' | 'none'>('stripe')
+
+    //Set the theme of stripe
+    useEffect(() => {
+        if(themeStore.mode === 'light'){
+            setStripeTheme('stripe')
+        } else {
+            setStripeTheme('night')
+        }
+    })
 
     useEffect(() => {
         //Create payment as soon as page loads up
@@ -39,7 +53,7 @@ export default function Checkout() {
     const options: StripeElementsOptions = {
         clientSecret,
         appearance: {
-            theme: 'flat',
+            theme: stripeTheme,
             labels: 'floating',
 
         }
@@ -47,11 +61,13 @@ export default function Checkout() {
 
     return (
         <div>
+            {!clientSecret && <OrderAnimation/>}
             {clientSecret && (
-                <Elements options={options} stripe={stripePromise}>
-                    <CheckoutForm clientSecret={clientSecret}/>
-                </Elements>
-
+                <motion.div initial={{opacity: 0}} animate={{opacity: 1}}>
+                    <Elements options={options} stripe={stripePromise}>
+                        <CheckoutForm clientSecret={clientSecret}/>
+                    </Elements>
+                </motion.div>
             )}
         </div>
     )
