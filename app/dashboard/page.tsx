@@ -3,12 +3,12 @@ import {getServerSession} from "next-auth/next";
 import {authOptions} from "@/pages/api/auth/[...nextauth]";
 import Image from "next/image";
 import formatPrice from "@/util/PriceFormat";
+import {prisma} from '@/util/prisma'
 
 
 export const revalidate = 0
 
 const fetchOrders = async () => {
-    const prisma = new PrismaClient()
     const user = await getServerSession(authOptions)
     if(!user){
         return null
