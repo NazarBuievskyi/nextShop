@@ -15,20 +15,22 @@ export default function Product({
                                 }: ProductType) {
     const {features} = metadata
     return (
-        <div >
+        <div>
             <Link href={{
                 pathname: `/product/${id}`,
-                query: {name, image, unit_amount, id, features, description}}}>
+                query: {name, image, unit_amount, id, features, description}
+            }}>
                 <Image
                     src={image}
                     alt={name}
                     width={600}
                     height={600}
+                    priority={true}
                     className={'w-full h-72 object-cover rounded-lg'}/>
             </Link>
 
             <div className={'font-medium py-2'}>
-                <h1 >{name}</h1>
+                <h1>{name}</h1>
                 <h2 className={'text-sm text-primary'}>
                     {unit_amount !== null ? formatPrice(unit_amount) : 'N/A'}
                 </h2>

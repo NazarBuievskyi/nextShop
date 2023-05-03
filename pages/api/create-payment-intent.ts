@@ -2,7 +2,7 @@ import Stripe from "stripe"
 import {NextApiRequest, NextApiResponse} from "next"
 import {authOptions} from "./auth/[...nextauth]"
 import {getServerSession} from "next-auth"
-import {PrismaClient} from "@prisma/client";
+import {prisma} from '@/util/prisma'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
     apiVersion: "2022-11-15",
@@ -15,7 +15,7 @@ const calculateOrderAmount = (items) => {
     return totalPrice
 }
 
-const prisma = new PrismaClient()
+
 
 export default async function handler(
     req: NextApiRequest,
